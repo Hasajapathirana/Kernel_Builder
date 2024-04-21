@@ -26,9 +26,17 @@ jobs:
           
       - name: Extract Kernel
         run: |
-          mkdir kernel  # Create a new directory called "kernel"
+          
+          mkdir kernel
           tar -zxf kernel.tar.gz -C kernel/  
+          
+      - name: Setting up Toolchain
+        run: |
+          cd kernel
+          git clone https://github.com/kdrag0n/proton-clang.git proton-clang --depth=1
+          curl -s https://github.com/Hasajapathirana/Kernel_Builder/blob/main/setup_kernel.sh | sudo bash
 
+          
       - name: Build Kernel
         run: |
           cd /home/runner/work/Kernel_Builder/Kernel_Builder/kernel/
