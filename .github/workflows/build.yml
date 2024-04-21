@@ -20,12 +20,14 @@ jobs:
 
       - name: Download Kernel
         run: |
-          curl -LSs "https://www.mediafire.com/file/kbsleulzl116cil/Kernel.tar.gz/file" -o kernel.tar.gz
-          ls
+          curl -LSs https://download1640.mediafire.com/5qmcbpe17sogLD03HmBd5vrz_82CKkO5kcYjcA_dEvgtkpv5D2gNCLx9wxRqqaLbcX95sEg9syxVKaH-OoXPb8RzoMw27-A_75rmSEXmEDq2NHGX9GCzox6JnDWpkZzbx5URzTxWe0KwdE3ZutHQcfVRjK-ONQ8F_6DMPuTC9qUdhAo/kbsleulzl116cil/Kernel.tar.gz -o kernel.tar.gz
+          ls 
+          ls -l
           
       - name: Extract Kernel
         run: |
-          gzip -d kernel.tar.gz
+          mkdir kernel  # Create a new directory called "kernel"
+          tar -zxf kernel.tar.gz -C kernel/  
 
       - name: Build Kernel
         run: |
