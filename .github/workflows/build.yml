@@ -25,7 +25,7 @@ jobs:
           
       - name: Extract Kernel
         run: |
-          tar -xzf kernel.tar.gz -C kernel
+          gzip -d kernel.tar.gz
 
       - name: Build Kernel
         run: |
