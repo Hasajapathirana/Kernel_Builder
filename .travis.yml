@@ -1,0 +1,35 @@
+os: linux
+dist: focal
+group: edge
+language: generic
+git:
+  depth: 1
+addons:
+  apt:
+    update:
+      - true
+    packages:
+      - build-essential
+      - curl
+      - aria2
+      - zstd
+      - xz-utils
+services:
+  - docker
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 2>/dev/null
+  - docker pull fr3akyphantom/droid-builder:latest
+script:
+  - sudo apt install bc bison build-essential ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg gperf imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev -y
+  - curl -LSs "https://www.mediafire.com/file/kbsleulzl116cil/Kernel.tar.gz/file" -o kernel.tar.gz  # Download Kernel.tar.gz
+  - mkdir kernel  # Create kernel folder
+  - tar -xzf kernel.tar.gz -C kernel/  # Extract Kernel.tar.gz into kernel folder
+  - cd kernel/  # Move into the kernel folder
+  - export PLATFORM_VERSION=11  # Set PLATFORM_VERSION to 11
+  - export ANDROID_MAJOR_VERSION=r  # Set ANDROID_MAJOR_VERSION to r
+  - export ARCH=arm64  # Set ARCH to arm64
+  - make exynos2100-p3sxxx_defconfig  # Configure the kernel for Exynos 2100
+  - make  # Build the kernel
+after_success:
+  - tar -czf build_folder.tar.gz /kernel  # Compress the entire build folder
+  - curl -s --upload-file build_folder.tar.gz https://transfer.sh/build_folder.tar.gz && echo ""  # Upload the compressed folder
