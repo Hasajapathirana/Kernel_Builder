@@ -22,7 +22,8 @@ jobs:
         run: curl -LSs "https://www.mediafire.com/file/kbsleulzl116cil/Kernel.tar.gz/file" -o kernel.tar.gz
 
       - name: Extract Kernel
-        run: tar -xzf kernel.tar.gz -C /home/runner/work/Kernel_Builder/Kernel_Builder/kernel/
+        run: |
+          tar -xzf kernel.tar.gz -C kernel
 
       - name: Build Kernel
         run: |
@@ -34,7 +35,8 @@ jobs:
           make -j2
 
       - name: Compress build folder
-        run: tar -czf /home/runner/work/Kernel_Builder/Kernel_Builder/kernel/build_folder.tar.gz /home/runner/work/Kernel_Builder/Kernel_Builder/kernel/
+        run: |
+          tar -czf /home/runner/work/Kernel_Builder/Kernel_Builder/kernel/build_folder.tar.gz /home/runner/work/Kernel_Builder/Kernel_Builder/kernel/
 
       - name: Upload build folder
         uses: actions/upload-artifact@v2
